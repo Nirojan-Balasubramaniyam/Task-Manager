@@ -1,0 +1,14 @@
+.high{
+    color: red;
+    font-weight: bold;
+}
+
+.medium{
+    color: yellowgreen;
+    font-weight: bold;
+}
+
+.low{
+    color: green;
+    font-weight: bold;
+}

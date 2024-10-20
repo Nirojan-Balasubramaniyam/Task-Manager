@@ -1,0 +1,42 @@
+
+<div class="modal" style="display: block;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Task</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="taskForm">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" formControlName="title">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="description"  formControlName="description">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dueDate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="dueDate"  formControlName="dueDate">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="priority" class="form-label">Description</label>
+                        <select name="taskPriority" id="priority" class="form-control"  formControlName="priority">
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <button type="submit" [disabled]="taskForm.invalid" class="btn btn-primary me-2" (click)="onSubmit()">Submit</button>
+                        <button type="button" class="btn btn-secondary" (click)="onReset()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

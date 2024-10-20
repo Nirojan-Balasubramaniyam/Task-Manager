@@ -1,0 +1,38 @@
+
+<div class="modal" style="display: block;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ isEditMode ? 'Edit User' : 'Add New User'}}</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="userForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" formControlName="name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email"  formControlName="email">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone"  formControlName="phone">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password"  formControlName="password">
+                    </div>
+
+                    <div>
+                        <button type="submit" [disabled]="userForm.invalid" class="btn btn-primary me-2" (click)="onSubmit()">{{ isEditMode ? 'Update' : 'Add User'}}</button>
+                        <button type="button" class="btn btn-secondary" (click)="onReset()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
