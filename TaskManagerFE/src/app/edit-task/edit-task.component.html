@@ -31,6 +31,15 @@
                         </select>
                     </div>
 
+                    
+                    <div class="mb-3">
+                        <label for="assigneeId" class="form-label">Select Assignee</label>
+                        <select name="taskPriority" id="assigneeId" class="form-control"  formControlName="assigneeId">
+                            <option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</option>
+                        </select>
+                    </div>
+
+
                     <div>
                         <button type="submit" [disabled]="taskForm.invalid" class="btn btn-primary me-2" (click)="onSubmit()">Update</button>
                         <button type="button" class="btn btn-secondary" (click)="onReset()">Cancel</button>

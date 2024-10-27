@@ -1,8 +1,68 @@
-<div class="navBtns d-flex justify-content-between" style="width: 150px; margin: 50px 30px;">
-    <button style="z-index: 999999;" class="btn btn-dark text-white" [routerLink]="['/user']">Users</button>
-    <button style="z-index: 999999;" class="btn btn-dark" [routerLink]="['/task']">Tasks</button>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" >  <img src="../../UNICOM-TIC_LOGO-2048x773 - Copy.png" width="5%" >Unicom TIC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 p-0 " style="z-index: +99999999999;">
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; height: 100vh; ">
+                
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap" />
+                    </svg>
+                    <span class="fs-4">Task Management</span>
+                </a>
+                <hr>
+
+                <ul class="nav nav-pills flex-column mb-auto navLink" >
+                    <li class="nav-item">
+                        <a [routerLink]="['/user']" class="nav-link " class-active="active"  aria-current="page">
+                            <svg class="bi me-2" width="16" height="16">
+                                <use xlink:href="/user" />
+                            </svg>
+                          Users
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/task']" class="nav-link text-white " class-active="active"  >
+                            <svg class="bi me-2" width="16" height="16">
+                                <use xlink:href="/task" />
+                            </svg>
+                            Tasks
+                        </a>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
+
+        <div class="col-10 pt-5">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
 
-<router-outlet></router-outlet>
+<!-- <div class="navBtns d-flex justify-content-between" style="width: 150px; margin: 50px 30px;">
+    <button style="z-index: 999999;" class="btn btn-dark text-white" [routerLink]="['/user']">Users</button>
+    <button style="z-index: 999999;" class="btn btn-dark" [routerLink]="['/task']">Tasks</button>
+</div> -->
 
-<!-- <app-task-list></app-task-list> -->
+
+
+

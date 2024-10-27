@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Task, TaskService } from '../../Services/task.service';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { TaskService } from '../../Services/task.service';
 import { Route, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Task } from '../Models/task';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-task-list',
@@ -10,28 +12,33 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TaskListComponent implements OnInit {
 
+
   tasks: Task[] = [];
   searchText: string = "";
-  
-  constructor(private taskService: TaskService, private router:Router, private toastr: ToastrService) { }
+  modalRef?:  BsModalRef;
+  taskId:number=0;
+
+  constructor(private taskService: TaskService, private router: Router, private toastr: ToastrService, private modalService: BsModalService) { }
 
   ngOnInit(): void {
     this.onLoad();
   }
 
   onDelete(taskId: number) {
+    if (confirm("Do you want to delete the Task")) {
     this.taskService.deleteTask(taskId).subscribe(data => {
-      if(confirm("Do you want to delete the Task")){
+    
         //alert("Task deleted successfully");
-        this.toastr.success("Task deleted successfully","Task Delete",{
+        this.toastr.success("Task deleted successfully", "Task Delete", {
           timeOut: 5000,
           closeButton: true,
           easing: 'ease-in',
           progressBar: true,
         })
-      }
+    
       this.onLoad();
     })
+  }
   }
 
   onLoad() {
@@ -42,7 +49,33 @@ export class TaskListComponent implements OnInit {
   }
 
   onEdit(id: number) {
-    this.router.navigate(["/edit-task",id])
+    this.router.navigate(["/edit-task", id])
 
+  }
+
+  openModal(template: TemplateRef<void>, Id:number) {
+    this.taskId = Id;
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+
+
+  decline() {
+    this.modalRef?.hide();
+  }
+
+  confirm() {
+    this.taskService.deleteTask(this.taskId).subscribe(data => {
+    
+      //alert("Task deleted successfully");
+      this.toastr.success("Task deleted successfully", "Task Delete", {
+        timeOut: 5000,
+        closeButton: true,
+        easing: 'ease-in',
+        progressBar: true,
+      })
+  
+    this.onLoad();
+  })
+    this.modalRef?.hide();
   }
 }

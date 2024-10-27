@@ -27,6 +27,34 @@
                         <input type="password" class="form-control" id="password"  formControlName="password">
                     </div>
 
+                    <h3>Address</h3>
+                    <hr>
+
+                    <div formGroupName = address>
+                        <div class="mb-3">
+                            <label for="line1" class="form-label">Line1</label>
+                            <input type="text" class="form-control" id="line1"  formControlName="line1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="line2" class="form-label">Line2</label>
+                            <input type="text" class="form-control" id="line2"  formControlName="line2">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city"  formControlName="city">
+                        </div>
+                    </div>
+
+                    <div *ngIf="isEditMode" class="d-flex justify-content-between">
+                        <div>
+                            <ul>
+                                <li *ngFor="let task of tasks">{{task.title}} - | DueDate:  {{task.dueDate | date}}</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div>
                         <button type="submit" [disabled]="userForm.invalid" class="btn btn-primary me-2" (click)="onSubmit()">{{ isEditMode ? 'Update' : 'Add User'}}</button>
                         <button type="button" class="btn btn-secondary" (click)="onReset()">Cancel</button>

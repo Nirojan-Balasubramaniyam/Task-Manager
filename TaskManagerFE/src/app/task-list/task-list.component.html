@@ -1,4 +1,4 @@
-<div class="container p-3 mt-5">
+<div class="container-fluid mt-5">
     <div class="card-body shadow mb-5 bg-white rounded p-3">
   
       <div class="d-flex justify-content-between mb-3">
@@ -17,6 +17,7 @@
             <th scope="col">Description</th>
             <th scope="col">DueDate</th>
             <th scope="col">Priority</th>
+            <th scope="col">Asignee</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -28,8 +29,9 @@
             <td>{{task.description}}</td>
             <td>{{task.dueDate | date:'dd/mm/yyyy'}}</td>
             <td [ngClass]="{'high': task.priority === 'High','medium': task.priority === 'Medium','low': task.priority === 'Low'}">{{task.priority}}</td>
+            <td>{{task.assignee?.name}}</td>
             <td class="d-flex justify-content-center">
-                <button type="button" class="btn btn-danger me-3" (click)="onDelete(task.id)">
+                <button type="button" class="btn btn-danger me-3" (click)="openModal(template,task.id)">
                     <i class="bi bi-trash3"></i>
                 </button>
 
@@ -41,5 +43,12 @@
         </tbody>
       </table>
     </div>
-  
   </div>
+
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Do you want to confirm?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()" >Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+    </div>
+  </ng-template>

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { User } from '../../Services/user.service';
+
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../Services/user.service';
+import { User } from '../Models/user';
 
 @Component({
   selector: 'app-user-list',
@@ -11,9 +12,9 @@ import { UserService } from '../../Services/user.service';
 })
 export class UserListComponent {
 
-  searchText: string="";
+  searchText: string = "";
   users: User[] = [];
-  
+
   constructor(private userService: UserService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -21,8 +22,9 @@ export class UserListComponent {
   }
 
   onDelete(userId: number) {
-    this.userService.deleteUser(userId).subscribe(data => {
-      if (confirm("Do you want to delete the User")) {
+    if (confirm("Do you want to delete the User")) {
+
+      this.userService.deleteUser(userId).subscribe(data => {
         //alert("User deleted successfully");
         this.toastr.success("User deleted successfully", "User Delete", {
           timeOut: 5000,
@@ -30,9 +32,9 @@ export class UserListComponent {
           easing: 'ease-in',
           progressBar: true,
         })
-      }
-      this.onLoad();
-    })
+        this.onLoad();
+      })
+    }
   }
 
   onLoad() {

@@ -19,7 +19,7 @@
 
                     <div class="mb-3">
                         <label for="dueDate" class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="dueDate"  formControlName="dueDate">
+                        <input type="text" class="form-control" id="dueDate"  formControlName="dueDate" bsDatepicker>
                     </div>
 
                     <div class="mb-3">
@@ -28,6 +28,13 @@
                             <option value="High">High</option>
                             <option value="Medium">Medium</option>
                             <option value="Low">Low</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="assigneeId" class="form-label">Select Assignee</label>
+                        <select name="taskPriority" id="assigneeId" class="form-control"  formControlName="assigneeId">
+                            <option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</option>
                         </select>
                     </div>
 

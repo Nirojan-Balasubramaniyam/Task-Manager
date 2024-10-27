@@ -4,6 +4,8 @@ import { TaskService } from '../../Services/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
+import { User } from '../Models/user';
+import { UserService } from '../../Services/user.service';
 
 @Component({
   selector: 'app-edit-task',
@@ -14,8 +16,9 @@ export class EditTaskComponent implements OnInit {
 
   taskForm: FormGroup;
   taskId: number;
+  users: User[] = [];
 
-  constructor(private fb: FormBuilder, private taskService: TaskService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private taskService: TaskService,private userService: UserService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
 
     const fetchedId = this.route.snapshot.paramMap.get("id");
     this.taskId = Number(fetchedId);
@@ -26,7 +29,8 @@ export class EditTaskComponent implements OnInit {
       title: ['', [Validators.required]],
       description: [''],
       dueDate: [''],
-      priority: ['', [Validators.required]]
+      priority: ['', [Validators.required]],
+      assigneeId: ['']
       
     })
 
@@ -34,6 +38,12 @@ export class EditTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.userService.getUsers().subscribe(data => {
+      this.users =data;
+    })
+
+
     this.taskService.getTask(this.taskId).subscribe(data => {
 
       let dueDate = new Date(data.dueDate).toISOString().slice(0, 10);
@@ -55,9 +65,11 @@ export class EditTaskComponent implements OnInit {
 
   onReset() {
     this.taskForm.reset();
+    this.router.navigate(["/task"]);
   }
   onSubmit() {
     let task = this.taskForm.value;
+  
 
     this.taskService.updateTask(task).subscribe(data => {
 
