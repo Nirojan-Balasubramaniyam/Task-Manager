@@ -18,6 +18,8 @@ import { FilteruserPipe } from './pipes/filteruser.pipe';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { RegisterComponent } from './Register/register/register.component';
+import { LoginComponent } from './Login/login/login.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { BsModalService } from 'ngx-bootstrap/modal';
     EditTaskComponent,
     UserListComponent,
     UserComponent,
-    FilteruserPipe
+    FilteruserPipe,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

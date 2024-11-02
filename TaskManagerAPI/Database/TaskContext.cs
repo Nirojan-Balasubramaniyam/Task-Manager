@@ -245,6 +245,12 @@ namespace TaskManager.Database
                 .HasMany(u => u.Tasks)
                 .WithOne(t => t.Assignee)
                 .HasForeignKey(t => t.AssigneeId);
+
+            modelBuilder.Entity<TaskItem>()
+                    .HasMany(t => t.CheckLists)
+                    .WithOne(c => c.Task)
+                    .HasForeignKey(t => t.TaskId);
+
             base.OnModelCreating(modelBuilder);
         }
     }

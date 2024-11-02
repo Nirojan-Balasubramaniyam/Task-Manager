@@ -1,0 +1,89 @@
+<div class="modal" style="display: block;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px;">
+
+            <div class="modal-body">
+                <h5 >Sign up</h5>
+                <form [formGroup]="registerForm">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="bi bi-person"></i></div>
+                                    <input type="text" class="form-control" id="fullName" placeholder="fullName" formControlName="fullName">
+                                </div>
+                                
+                                <div class="form-text text-danger" *ngIf="registerForm.invalid">
+                                    <div >Full Name is required</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="bi bi-envelope"></i></div>
+                                    <input type="text" class="form-control" id="fullName" placeholder="Your Email" formControlName="email">
+                                </div>
+                                <div class="form-text text-danger" *ngIf="registerForm.invalid">
+                                    <div >Valid email is required</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="bi bi-lock"></i></div>
+                                    <input type="text" class="form-control" id="password" placeholder="Password" formControlName="password">
+                                </div>
+                                <div class="form-text text-danger" *ngIf="registerForm.invalid">
+                                    <div >Password must be 6 characters long</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="bi bi-lock-fill"></i></div>
+                                    <input type="text" class="form-control" id="repeatPassword" placeholder="Repeat Your Password">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-text"><i class="bi bi-person-badge"></i></div>
+                                    <select name="role" id="role" class="form-control" aria-placeholder="Select your Role" formControlName="role">
+                                        <option value="High">Admin</option>
+                                        <option value="Medium">Editor</option>
+                                        <option value="Low">Viewer</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-text text-danger" *ngIf="registerForm.invalid">
+                                    <div >Roll is required</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-around">
+                                <input type="checkbox" class="form-check-input" formControlName="isChecked">
+                                <p>I agree to all statements in <a href="">Terms of service</a> <br> <span class="form-text text-danger">You must agree to the Term</span> </p>
+                                
+                            </div>
+
+                            <div>
+                                <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary me-2" style="width: 100%;"
+                                    (click)="onSubmit()">Register</button>
+                            </div>
+
+                            
+                            <div >
+                                <a class="d-flex justify-content-center text-muted"  href="">I am already a member</a>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <img src="../../../../signup.jpg" alt="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

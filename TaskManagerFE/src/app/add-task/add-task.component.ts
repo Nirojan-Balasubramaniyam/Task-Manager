@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {  TaskService } from '../../Services/task.service';
 import { Route, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -21,8 +21,23 @@ export class AddTaskComponent implements OnInit {
       description: [''],
       dueDate: [''],
       priority: ['', [Validators.required]],
-      assigneeId: ['']
+      assigneeId: [''],
+      checkLists: this.fb.array([])
     })
+  }
+
+  get myCheckList():FormArray{
+    return this.taskForm.get('checkLists') as FormArray
+  }
+
+  addCheckList(){
+    this.myCheckList.push(this.fb.group({
+      name:[''],
+      isChecked:[false]
+    }))
+  }
+  removeCheckList(index:number){
+    this.myCheckList.removeAt(index);
   }
 
   ngOnInit(): void {
@@ -33,7 +48,7 @@ export class AddTaskComponent implements OnInit {
 
   onSubmit() {
     let task = this.taskForm.value;
-    console.log(task)
+    console.log("task payload",task)
 
     this.taskService.addTask(task).subscribe(data => {
 
@@ -51,5 +66,6 @@ export class AddTaskComponent implements OnInit {
 
   onReset() {
     this.taskForm.reset();
+    this.router.navigate(["/task"]);
   }
 }

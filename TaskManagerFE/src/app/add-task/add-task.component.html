@@ -1,46 +1,76 @@
-
-<div class="modal" style="display: block;">
+<div class="modal" style="display: block;" >
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 800px;">
             <div class="modal-header">
                 <h5 class="modal-title">Add Task</h5>
             </div>
             <div class="modal-body">
                 <form [formGroup]="taskForm">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" formControlName="title">
-                    </div>
+                    <div class="row" >
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" formControlName="title">
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="description"  formControlName="description">
-                    </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="description" formControlName="description">
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="dueDate" class="form-label">Due Date</label>
-                        <input type="text" class="form-control" id="dueDate"  formControlName="dueDate" bsDatepicker>
-                    </div>
+                            <div class="mb-3">
+                                <label for="dueDate" class="form-label">Due Date</label>
+                                <input type="text" class="form-control" id="dueDate" formControlName="dueDate"
+                                    bsDatepicker>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="priority" class="form-label">Description</label>
-                        <select name="taskPriority" id="priority" class="form-control"  formControlName="priority">
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </div>
+                            <div class="mb-3">
+                                <label for="priority" class="form-label">Description</label>
+                                <select name="taskPriority" id="priority" class="form-control"
+                                    formControlName="priority">
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
 
-                    <div class="mb-3">
-                        <label for="assigneeId" class="form-label">Select Assignee</label>
-                        <select name="taskPriority" id="assigneeId" class="form-control"  formControlName="assigneeId">
-                            <option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</option>
-                        </select>
-                    </div>
+                            <div class="mb-3">
+                                <label for="assigneeId" class="form-label">Select Assignee</label>
+                                <select name="taskPriority" id="assigneeId" class="form-control"
+                                    formControlName="assigneeId">
+                                    <option *ngFor="let user of users" value="{{user.id}}">{{user.name}}</option>
+                                </select>
+                            </div>
 
-                    <div>
-                        <button type="submit" [disabled]="taskForm.invalid" class="btn btn-primary me-2" (click)="onSubmit()">Submit</button>
-                        <button type="button" class="btn btn-secondary" (click)="onReset()">Cancel</button>
+                            <div>
+                                <button type="submit" [disabled]="taskForm.invalid" class="btn btn-primary me-2"
+                                    (click)="onSubmit()">Submit</button>
+                                <button type="button" class="btn btn-secondary" (click)="onReset()">Cancel</button>
+                            </div>
+                        </div>
+
+
+                        <div class="col">
+                            <h3>Add CheckList</h3>
+                            <hr>
+                            <div formArrayName="checkLists">
+                                <div class="row" *ngFor="let checkList of myCheckList.controls; let i = index">
+                                    <div class="col" [formGroupName] = "i">
+                                        <input type="text" class="form-control" id="checkName" formControlName="name">
+                                        <input type="checkbox" class="form-check-input" formControlName="isChecked">
+                                        <button type="button" class="btn btn-danger" (click)="removeCheckList(i)">&times;</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button *ngIf="myCheckList.length < 3" type="button" class="btn btn-success" (click)="addCheckList()">+ Add</button>
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </form>
             </div>
