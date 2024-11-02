@@ -15,5 +15,6 @@ namespace TaskManager.Models
         public int? AssigneeId { get; set; }
         public User? Assignee { get; set; }
         public ICollection<ChekList>? CheckLists { get; set; }
+
     }
 }
