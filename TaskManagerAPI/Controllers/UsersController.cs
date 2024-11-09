@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TaskManager.Database;
+using TaskManager.DTOs;
 using TaskManager.Models;
 
 namespace TaskManager.Controllers
@@ -15,10 +21,12 @@ namespace TaskManager.Controllers
     public class UsersController : ControllerBase
     {
         private readonly TaskContext _context;
+        private readonly IConfiguration _configuration;
 
-        public UsersController(TaskContext context)
+        public UsersController(TaskContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: api/Users
@@ -77,12 +85,105 @@ namespace TaskManager.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<IActionResult> PostUser(UserRequestDTO userReq)
         {
+            var user = new User
+            {
+                Name = userReq.Name,
+                Email = userReq.Email,
+                Phone = userReq.Phone,
+                Role = userReq.Role,
+                Tasks = userReq.Tasks,
+                Address = userReq.Address,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(userReq.Password) 
+
+            };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            //var createdUser =  CreatedAtAction("GetUser", new { id = user.Id }, user);
+          
+            var token = CreateToken(user);
+            return Ok(token);
+        }
+
+        [HttpPost("login")] 
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            try
+            {
+                var user = await _context.Users.Include(u => u.Address).Include(u => u.Tasks).FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                {
+                    throw new Exception("User not found");
+                }
+                var isValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+                if (!isValid)
+                {
+                    throw new Exception("Password is invalid");
+                }
+                var token = CreateToken(user);
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+   
+
+        }
+
+        private TokenModel CreateToken(User user)
+        {
+            var claimList = new List<Claim>();
+            claimList.Add(new Claim("UserId",user.Id.ToString()));
+            claimList.Add(new Claim("Name", user.Name.ToString()));
+            claimList.Add(new Claim("Email",user.Email.ToString()));
+            claimList.Add(new Claim("Phone",user.Phone.ToString()));
+            claimList.Add(new Claim("Role", user.Role.ToString()));
+            /* claimList.Add(new Claim("Tasks", user.Tasks.ToString()));
+             claimList.Add(new Claim("Address", user.Address.ToString())); */
+
+            if (user.Tasks != null )
+            {
+                var tasksJson = JsonSerializer.Serialize(user.Tasks.Select(t => new { t.Title, t.Description, t.DueDate, t.Priority }));
+                claimList.Add(new Claim("Tasks", tasksJson));
+            }
+            else
+            {
+                claimList.Add(new Claim("Tasks", "[]")); 
+            }
+
+            // Check if Address is not null before serializing
+            if (user.Address != null)
+            {
+                var addressJson = JsonSerializer.Serialize(new { user.Address.Line1, user.Address.Line2, user.Address.City });
+                claimList.Add(new Claim("Address", addressJson));
+            }
+            else
+            {
+                claimList.Add(new Claim("Address", "{}"));
+            }
+
+
+            var key = _configuration["Jwt:Key"];
+            var secKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
+            var credential = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claimList,  
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: credential 
+                );
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var res = new TokenModel();
+            res.Token = tokenString;
+            return res;
+
+
         }
 
         // DELETE: api/Users/5

@@ -1,5 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 using TaskManager.Database;
 
@@ -18,14 +20,30 @@ namespace TaskManager
                .AddJsonOptions(options =>
                {
                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                  // options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                   options.JsonSerializerOptions.MaxDepth = 64;
                });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
             builder.Services.AddDbContext<TaskContext>(opt =>
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
+
+
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]));
+
+
+            builder.Services.AddAuthentication()
+                    .AddJwtBearer(opt => 
+                        opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                        {
+                            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                            ValidAudience = builder.Configuration["Jwt:Audience"],
+                            IssuerSigningKey = key 
+                        });
 
             builder.Services.AddCors(opt =>
             {
