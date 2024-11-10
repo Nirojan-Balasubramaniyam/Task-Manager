@@ -144,7 +144,7 @@ namespace TaskManager.Controllers
             /* claimList.Add(new Claim("Tasks", user.Tasks.ToString()));
              claimList.Add(new Claim("Address", user.Address.ToString())); */
 
-            if (user.Tasks != null )
+           /* if (user.Tasks != null )
             {
                 var tasksJson = JsonSerializer.Serialize(user.Tasks.Select(t => new { t.Title, t.Description, t.DueDate, t.Priority }));
                 claimList.Add(new Claim("Tasks", tasksJson));
@@ -154,7 +154,7 @@ namespace TaskManager.Controllers
                 claimList.Add(new Claim("Tasks", "[]")); 
             }
 
-            // Check if Address is not null before serializing
+       
             if (user.Address != null)
             {
                 var addressJson = JsonSerializer.Serialize(new { user.Address.Line1, user.Address.Line2, user.Address.City });
@@ -163,7 +163,7 @@ namespace TaskManager.Controllers
             else
             {
                 claimList.Add(new Claim("Address", "{}"));
-            }
+            }*/
 
 
             var key = _configuration["Jwt:Key"];
