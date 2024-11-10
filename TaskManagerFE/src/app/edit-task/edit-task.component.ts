@@ -65,7 +65,7 @@ export class EditTaskComponent implements OnInit {
 
   onReset() {
     this.taskForm.reset();
-    this.router.navigate(["/task"]);
+    this.router.navigate(["/admin/task"]);
   }
   onSubmit() {
     let task = this.taskForm.value;
@@ -81,7 +81,7 @@ export class EditTaskComponent implements OnInit {
         toastClass: 'ngx-toastr'
       });
 
-      this.router.navigate(["/task"]);
+      this.router.navigate(["/admin/task"]);
 
     })
   }

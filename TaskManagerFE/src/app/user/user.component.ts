@@ -91,7 +91,7 @@ export class UserComponent {
 
   onReset() {
     this.userForm.reset();
-    this.router.navigate(["/user"]);
+    this.router.navigate(["/admin/user"]);
 
   }
 

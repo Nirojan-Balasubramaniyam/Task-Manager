@@ -60,12 +60,12 @@ export class AddTaskComponent implements OnInit {
         toastClass: 'ngx-toastr'
       })
       //alert("Task created successfully")
-      this.router.navigate(["/task"]);
+      this.router.navigate(["/admin/task"]);
     })
   }
 
   onReset() {
     this.taskForm.reset();
-    this.router.navigate(["/task"]);
+    this.router.navigate(["/admin/task"]);
   }
 }
