@@ -53,34 +53,75 @@ namespace TaskManager.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+     
+        public async Task<IActionResult> PutUser(int id, UserRequestDTO userRequest)
         {
-            if (id != user.Id)
+            // Check if the requested user ID matches the ID in the URL
+            var existingUser = await _context.Users.Include(u => u.Address).FirstOrDefaultAsync(u => u.Id == id);
+            if (existingUser == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
-            _context.Entry(user.Address).State = EntityState.Modified;
+            // Map UserRequestDTO fields to User model fields
+            existingUser.Name = userRequest.Name;
+            existingUser.Email = userRequest.Email;
+            existingUser.Phone = userRequest.Phone;
+            existingUser.Role = userRequest.Role;
+            existingUser.Tasks = userRequest.Tasks;
 
-            try
+            // Update Address if provided
+            if (userRequest.Address != null)
             {
+                existingUser.Address.City = userRequest.Address.City;
+                existingUser.Address.Line1 = userRequest.Address.Line1;
+                existingUser.Address.Line2 = userRequest.Address.Line2;
+            }
+
+            // Hash the password and assign it to PasswordHash
+            existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password);
+
+            // Mark the User entity as modified
+            _context.Entry(existingUser).State = EntityState.Modified;
+            if (existingUser.Address != null)
+            {
+                _context.Entry(existingUser.Address).State = EntityState.Modified;
+            }
+
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            
 
             return NoContent();
         }
+
+        /* public async Task<IActionResult> PutUser(int id, User user)
+         {
+             if (id != user.Id)
+             {
+                 return BadRequest();
+             }
+
+             _context.Entry(user).State = EntityState.Modified;
+             _context.Entry(user.Address).State = EntityState.Modified;
+
+             try
+             {
+                 await _context.SaveChangesAsync();
+             }
+             catch (DbUpdateConcurrencyException)
+             {
+                 if (!UserExists(id))
+                 {
+                     return NotFound();
+                 }
+                 else
+                 {
+                     throw;
+                 }
+             }
+
+             return NoContent();
+         }*/
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

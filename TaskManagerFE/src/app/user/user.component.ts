@@ -50,11 +50,12 @@ export class UserComponent {
 
   onSubmit() {
     if (this.userId) {
-      
+            
       let user = this.userForm.value;
       user.id=this.userId;
       user.address.id = this.addressId;
       user.address.userId = this.userId;
+      console.log(user)
       this.userService.updateUser(user).subscribe(data => {
 
         this.toastr.success("User updated Successfully", "User Update", {
@@ -65,7 +66,7 @@ export class UserComponent {
           toastClass: 'ngx-toastr'
         });
 
-        this.router.navigate(["/user"]);
+        this.router.navigate(["/admin/user"]);
 
       })
 
@@ -83,7 +84,7 @@ export class UserComponent {
           toastClass: 'ngx-toastr'
         })
         //alert("User created successfully")
-        this.router.navigate(["/user"]);
+        this.router.navigate(["/admin/user"]);
       })
     }
 
@@ -108,7 +109,7 @@ export class UserComponent {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          password:data.password,
+          password:data.PasswordHash,
           address:data.address
         });
       }, error => {

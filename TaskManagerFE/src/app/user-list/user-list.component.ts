@@ -45,7 +45,7 @@ export class UserListComponent {
   }
 
   onEdit(id: number) {
-    this.router.navigate(["/edit-user", id])
+    this.router.navigate(["/admin/edit-user", id])
 
   }
 

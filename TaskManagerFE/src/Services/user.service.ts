@@ -24,6 +24,7 @@ export class UserService {
   }
 
   updateUser(user: User) {
+    console.log(this.url + "/" + user.id, user)
     return this.http.put(this.url + "/" + user.id, user);
   }
 

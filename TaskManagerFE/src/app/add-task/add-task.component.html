@@ -1,12 +1,9 @@
-<div class="modal" style="display: block;" >
-    <div class="modal-dialog">
-        <div class="modal-content" style="width: 800px;">
-            <div class="modal-header">
+
                 <h5 class="modal-title">Add Task</h5>
-            </div>
+       
             <div class="modal-body">
                 <form [formGroup]="taskForm">
-                    <div class="row" >
+                    <div class="row">
                         <div class="col">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Title</label>
@@ -55,17 +52,26 @@
                             <hr>
                             <div formArrayName="checkLists">
                                 <div class="row" *ngFor="let checkList of myCheckList.controls; let i = index">
-                                    <div class="col" [formGroupName] = "i">
-                                        <input type="text" class="form-control" id="checkName" formControlName="name">
-                                        <input type="checkbox" class="form-check-input" formControlName="isChecked">
-                                        <button type="button" class="btn btn-danger" (click)="removeCheckList(i)">&times;</button>
-
+                                    <div class="col" [formGroupName]="i">
+                                        <div class="row mb-4">
+                                            <div class="col form-check">
+                                                <input type="checkbox" class="form-check-input"
+                                                formControlName="isChecked">
+                                                <input type="text" class="form-control" id="checkName"
+                                                    formControlName="name">                                              
+                                            </div>
+                                            <div class="col">
+                                                <button type="button" class="btn btn-danger"
+                                                    (click)="removeCheckList(i)">&times;</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <button *ngIf="myCheckList.length < 3" type="button" class="btn btn-success" (click)="addCheckList()">+ Add</button>
+                                <button *ngIf="myCheckList.length < 3" type="button" class="btn btn-success"
+                                    (click)="addCheckList()">+ Add</button>
                             </div>
                         </div>
 
@@ -74,6 +80,3 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-</div>

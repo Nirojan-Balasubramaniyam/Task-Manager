@@ -5,7 +5,7 @@ export class User {
     id: number;
     name: string;
     email: string;
-    password: string;
+    PasswordHash: string;
     phone: string;
     address?:Address | null;
     tasks? : Task[] 
@@ -15,7 +15,7 @@ export class User {
         this.id = obj.id ?? null;
         this.name = obj.name ?? '';
         this.email = obj.email ?? '';
-        this.password = obj.password ?? '';
+        this.PasswordHash = obj.PasswordHash ?? '';
         this.phone = obj.phone ?? '07756825';
         this.address = obj.address !== null ? new Address(obj.address ) : null;
         this.tasks = obj.tasks ;

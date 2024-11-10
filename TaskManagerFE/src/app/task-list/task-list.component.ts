@@ -49,7 +49,7 @@ export class TaskListComponent implements OnInit {
   }
 
   onEdit(id: number) {
-    this.router.navigate(["/edit-task", id])
+    this.router.navigate(["/admin/edit-task", id])
 
   }
 
