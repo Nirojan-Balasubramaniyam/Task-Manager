@@ -20,6 +20,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { RegisterComponent } from './Register/register/register.component';
 import { LoginComponent } from './Login/login/login.component';
+import { BlankLayoutComponent } from './Layouts/blank-layout/blank-layout.component';
+import { AdminLayoutComponent } from './Layouts/admin-layout/admin-layout.component';
+import { jwtDecode } from "jwt-decode";
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import { LoginComponent } from './Login/login/login.component';
     UserComponent,
     FilteruserPipe,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    BlankLayoutComponent,
+    AdminLayoutComponent
   ],
   imports: [
     BrowserModule,

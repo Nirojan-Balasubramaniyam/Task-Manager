@@ -7,16 +7,32 @@ import { UserComponent } from './user/user.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { RegisterComponent } from './Register/register/register.component';
 import { LoginComponent } from './Login/login/login.component';
+import { BlankLayoutComponent } from './Layouts/blank-layout/blank-layout.component';
+import { AdminLayoutComponent } from './Layouts/admin-layout/admin-layout.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  {path: 'task', component: TaskListComponent },
-  {path: 'user', component: UserListComponent },
-  {path:'add-user', component:UserComponent},
-  {path:'add-task', component:AddTaskComponent},
-  {path:'edit-task/:id', component:EditTaskComponent},
-  {path:'edit-user/:id', component:UserComponent},
-  {path:'registration', component:RegisterComponent},
-  {path:'sigin', component:LoginComponent}
+
+  {path:'',
+    component:BlankLayoutComponent,
+    children:[
+      {path:'registration', component:RegisterComponent},
+      {path:'login', component:LoginComponent}
+    ]
+  },
+
+  {path:'admin',
+    component:AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children:[
+      {path: 'task', component: TaskListComponent },
+      {path: 'user', component: UserListComponent },
+      {path:'add-user', component:UserComponent},
+      {path:'add-task', component:AddTaskComponent},
+      {path:'edit-task/:id', component:EditTaskComponent},
+      {path:'edit-user/:id', component:UserComponent},
+    ]
+  }
 ];
 
 @NgModule({

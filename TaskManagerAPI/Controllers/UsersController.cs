@@ -108,16 +108,16 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost("login")] 
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(loginRequestDTO loginRequest)
         {
             try
             {
-                var user = await _context.Users.Include(u => u.Address).Include(u => u.Tasks).FirstOrDefaultAsync(u => u.Email == email);
+                var user = await _context.Users.Include(u => u.Address).Include(u => u.Tasks).FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
                 if (user == null)
                 {
                     throw new Exception("User not found");
                 }
-                var isValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+                var isValid = BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash);
                 if (!isValid)
                 {
                     throw new Exception("Password is invalid");
