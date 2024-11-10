@@ -53,24 +53,20 @@ namespace TaskManager.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-     
         public async Task<IActionResult> PutUser(int id, UserRequestDTO userRequest)
         {
-            // Check if the requested user ID matches the ID in the URL
             var existingUser = await _context.Users.Include(u => u.Address).FirstOrDefaultAsync(u => u.Id == id);
             if (existingUser == null)
             {
                 return NotFound();
             }
 
-            // Map UserRequestDTO fields to User model fields
             existingUser.Name = userRequest.Name;
             existingUser.Email = userRequest.Email;
             existingUser.Phone = userRequest.Phone;
             existingUser.Role = userRequest.Role;
             existingUser.Tasks = userRequest.Tasks;
 
-            // Update Address if provided
             if (userRequest.Address != null)
             {
                 existingUser.Address.City = userRequest.Address.City;
@@ -78,10 +74,8 @@ namespace TaskManager.Controllers
                 existingUser.Address.Line2 = userRequest.Address.Line2;
             }
 
-            // Hash the password and assign it to PasswordHash
             existingUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password);
 
-            // Mark the User entity as modified
             _context.Entry(existingUser).State = EntityState.Modified;
             if (existingUser.Address != null)
             {
